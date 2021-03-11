@@ -10,6 +10,7 @@ export type Question = {
 
 }
 
+//Adding new key (answers).
 export type QuestionState=Question & {answers:string[]}
 
 export enum Difficulty{
@@ -22,6 +23,7 @@ export const FetchQuiz=async(amount:number, difficulty:Difficulty)=>{
     const data=await(await fetch(url)).json();
     return data.results.map((quest:Question)=>({
         ...quest,
+        //shuffling the answer randomly
         answers: ShuffleArray([
             ...quest.incorrect_answers,
             quest.correct_answer
