@@ -2,9 +2,8 @@ import React, { useState } from 'react'
 import QuestionCard from './components/QuestionCard';
 import {Difficulty, QuestionState} from './API'
 import {FetchQuiz} from './API'
-import { isGetAccessorDeclaration } from 'typescript';
+import {Style, Wrapper} from './App.styles'
 
-//User answer compared with the correct answer
 export type AnswerObject={
   question:string;
   answer: string;
@@ -18,12 +17,10 @@ const App=()=> {
   const [loading,setLoading]=useState(false);
   const [questions,setQuestions]=useState<QuestionState[]>([]);
   const [number, setNumber]=useState(0);
+  const [correct,setCorrect]=useState<boolean>(true)
   const [userAnswer,setUserAnswer]=useState<AnswerObject[]>([]);
   const [score,setScore]=useState(0);
   const [gameOver,setGameOver]=useState(true);
-
-  console.log(questions)
-
 
   const startTrivia = async()=>{
     setLoading(true);
@@ -45,9 +42,12 @@ const App=()=> {
       const correct=questions[number].correct_answer===answer;
       //Adding score
       if (correct){
+        setCorrect(true)
         setScore(prev=>prev+1);
+      }else{
+        setCorrect(false)
       }
-      //Save state
+      //Save to state
       const answerObject={
         question: questions[number].question,
         answer,
@@ -59,6 +59,7 @@ const App=()=> {
   }
   
   const nextQuestion=()=>{
+    setCorrect(true);
     const nextQuestion=number+1;
     if(nextQuestion===TOTAL){
       setGameOver(true)
@@ -69,28 +70,32 @@ const App=()=> {
 
 
   return (
-    <div className="App">
-      <h1>EASY GEOGRAPHY QUIZ</h1>
-      {gameOver || userAnswer.length===TOTAL ? (
-        <button className="start" onClick={startTrivia}>Start Trivia</button>
-      ):null}
-      {!gameOver ? (<p className="score">Score: {score}</p>):null}
-      {loading && (<p>Loading Questions...</p>)}
-      {!loading && !gameOver &&(
-          <QuestionCard 
-          questionNr={number+1} 
-          totalQuestions={TOTAL} 
-          question={questions[number].question} 
-          answers={questions[number].answers} 
-          userAnswer={userAnswer? userAnswer[number]:undefined}
-          callback={checkAnswer}
-        />
-      )}
-      {!gameOver && !loading && userAnswer.length===number+1 && number !== TOTAL-1 ? (
-        <button className="next" onClick={nextQuestion}>Next Question</button>
-      ):null}
-
-    </div>
+    <>
+      <Style />
+        <Wrapper>
+          <h1>Geography Quiz</h1>
+          <h3>Check your geography knowledge by taking this simple quiz!</h3>
+          {gameOver || userAnswer.length===TOTAL ? (
+            <button className="start" onClick={startTrivia}>Start Trivia</button>
+          ):null}
+          {!gameOver ? (<p className="score">Score: {score}</p>):null}
+          {loading && (<p>Loading Questions...</p>)}
+          {!loading && !gameOver &&(
+              <QuestionCard 
+              questionNr={number+1} 
+              totalQuestions={TOTAL} 
+              question={questions[number].question} 
+              answers={questions[number].answers} 
+              userAnswer={userAnswer? userAnswer[number]:undefined}
+              callback={checkAnswer}
+            />
+          )}
+          {!gameOver && !loading && userAnswer.length===number+1 && number !== TOTAL-1 ? (
+            <button className="next" onClick={nextQuestion}>Next Question</button>
+          ):null}
+          {!correct && <h4>Wrong! The correct answer is {questions[number].correct_answer}</h4>}
+        </Wrapper>
+    </>
   );
 }
 

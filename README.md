@@ -1,5 +1,9 @@
-# SimpleQuiz 
-This web application is a simple quiz application which receive all questions and answers from  [Open Trivia DB API](https://opentdb.com/api_config.php). The application itself is created owing to React/TypeScript Tutorial from [freeCodeCamp](https://www.youtube.com/watch?v=F2JCjVSZlG0).
+# Geography Quiz
+This web application is a simple quiz application which receive all questions and answers from  [Open Trivia DB API](https://opentdb.com/api_config.php). The application itself is created based on the React/TypeScript Tutorial from [freeCodeCamp](https://www.youtube.com/watch?v=F2JCjVSZlG0).
+
+<p text-align="center">
+  <img src="./src/img/webapp_pic1.png" width="300" alt="SimpleQuiz Image">
+</p>
 
 # Technologies and Libraries Used 
 - React
